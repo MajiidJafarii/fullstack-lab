@@ -27,6 +27,12 @@ urlpatterns = [
             "apps.accounts.api.urls"
         ),
     ),
+    path(
+        "api/blog/",
+        include(
+            "apps.blog.api.urls"
+        ),
+    ),
 
     # -------------------------------------------------------------------------
     # OpenAPI Schema

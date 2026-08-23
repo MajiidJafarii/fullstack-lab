@@ -7,6 +7,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.exceptions import ValidationError as DRFValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema
 from rest_framework_simplejwt.exceptions import TokenError
 
 from apps.accounts.api.serializers import (
@@ -43,12 +44,27 @@ from apps.accounts.services.tokens import (
 
 
 @method_decorator(ensure_csrf_cookie, name="dispatch")
+@extend_schema(
+    responses={
+        200: {
+            "type": "object",
+            "properties": {
+                "csrfToken": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+)
 class CSRFView(APIView):
     authentication_classes = []
     permission_classes = [
         permissions.AllowAny,
     ]
 
+    @extend_schema(
+        responses=UserSerializer
+    )
     def get(self, request):
         token = get_token(request)
 
@@ -360,6 +376,19 @@ class LoginView(generics.GenericAPIView):
 
 
 @method_decorator(csrf_protect, name="dispatch")
+@extend_schema(
+    request=None,
+    responses={
+        200: {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+)
 class RefreshView(APIView):
     authentication_classes = []
     permission_classes = [
@@ -430,6 +459,19 @@ class RefreshView(APIView):
 
 
 @method_decorator(csrf_protect, name="dispatch")
+@extend_schema(
+    request=None,
+    responses={
+        200: {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+)
 class LogoutView(APIView):
     # logout باید حتی اگر access token منقضی شده
     # باشد نیز قابل انجام باشد.
@@ -478,6 +520,9 @@ class MeView(APIView):
         permissions.IsAuthenticated,
     ]
 
+    @extend_schema(
+        responses=UserSerializer
+    )
     def get(self, request):
         serializer = UserSerializer(
             request.user
@@ -488,6 +533,10 @@ class MeView(APIView):
             status=status.HTTP_200_OK,
         )
 
+    @extend_schema(
+        request=UpdateProfileSerializer,
+        responses=UserSerializer,
+    )
     def patch(self, request):
         serializer = UpdateProfileSerializer(
             request.user,
