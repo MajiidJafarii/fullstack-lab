@@ -1,34 +1,29 @@
 # 🚀 Fullstack Lab
 
 <p align="center">
-
-یک پروژه فول‌استک مدرن با معماری حرفه‌ای برای مدیریت کاربران، احراز هویت، داشبورد و تنظیمات حساب کاربری.
-
+یک پروژه فول‌استک مدرن با معماری مقیاس‌پذیر برای مدیریت کاربران، احراز هویت، داشبورد و سیستم بلاگ.
 </p>
-
 
 ---
 
-# 🧩 معرفی پروژه
+## 🧩 معرفی پروژه
 
-**Fullstack Lab** یک سامانه فول‌استک مدرن است که با هدف پیاده‌سازی یک پروژه واقعی، قابل توسعه و نزدیک به استانداردهای صنعتی ساخته شده است.
+**Fullstack Lab** یک پروژه فول‌استک واقعی با هدف پیاده‌سازی یک سیستم قابل توسعه و نزدیک به استانداردهای صنعتی است.
 
 تمرکز اصلی پروژه:
 
-- معماری تمیز و قابل توسعه
-- ارتباط استاندارد بین Frontend و Backend
+- معماری تمیز و مقیاس‌پذیر
+- جداسازی مسئولیت‌ها در Frontend و Backend
 - احراز هویت امن کاربران
 - مدیریت Session
 - طراحی رابط کاربری مدرن
-- استفاده از ابزارهای روز توسعه نرم‌افزار
-
+- ارتباط استاندارد بین Client و API
 
 ---
 
-# ✨ امکانات پروژه
+# ✨ امکانات
 
-
-## 🔐 سیستم احراز هویت
+## 🔐 Authentication
 
 - ثبت‌نام کاربران
 - ورود کاربران
@@ -39,67 +34,64 @@
 - تغییر رمز عبور
 
 
+## 📝 Blog System
+
+- ایجاد پست
+- ویرایش پست
+- حذف پست
+- مدیریت تصاویر پست
+- نمایش لیست مطالب
+- API مبتنی بر OpenAPI
+
+
 ## 🎨 رابط کاربری
 
-- طراحی کاملاً RTL برای زبان فارسی
-- پشتیبانی از حالت روشن و تاریک
+- طراحی کامل RTL برای زبان فارسی
+- پشتیبانی از Dark / Light Theme
 - فونت Vazirmatn
 - Sidebar واکنش‌گرا
-- طراحی صفحات مدیریتی
 - کامپوننت‌های قابل استفاده مجدد
-
-
-## 📊 صفحات سیستم
-
-- صفحه اصلی
-- داشبورد مدیریتی
-- پروفایل کاربر
-- تنظیمات حساب
-- تغییر رمز عبور
-
+- طراحی مدرن مبتنی بر shadcn/ui
 
 ---
 
-# 🛠 تکنولوژی‌های استفاده شده
+# 🛠 تکنولوژی‌ها
 
-
-# Frontend
+## Frontend
 
 | تکنولوژی | کاربرد |
 |---|---|
 | React | ساخت رابط کاربری |
 | TypeScript | توسعه امن و قابل نگهداری |
-| Vite | ابزار توسعه و Build |
-| Tailwind CSS | طراحی رابط کاربری |
-| shadcn/ui | کامپوننت‌های UI |
-| React Router | مدیریت مسیرها |
-| TanStack Query | مدیریت درخواست‌های API |
+| Vite | ابزار Build و Development |
+| Tailwind CSS | طراحی UI |
+| shadcn/ui | کامپوننت‌های رابط کاربری |
+| React Router | مدیریت Routing |
+| TanStack Query | مدیریت داده‌های Server |
 | Axios | ارتباط HTTP |
 | Orval | تولید خودکار API Client از OpenAPI |
 
 
-# Backend
+## Backend
 
 | تکنولوژی | کاربرد |
 |---|---|
-| Django | فریم‌ورک اصلی Backend |
-| Django REST Framework | ساخت API |
-| PostgreSQL | دیتابیس |
-| JWT Authentication | احراز هویت مبتنی بر Token |
+| Django | فریم‌ورک Backend |
+| Django REST Framework | ساخت REST API |
+| PostgreSQL | پایگاه داده |
+| JWT Authentication | احراز هویت |
 
 
-# DevOps
+## DevOps
 
 | تکنولوژی | کاربرد |
 |---|---|
 | Docker | کانتینرسازی |
 | Docker Compose | مدیریت سرویس‌ها |
 
-
 ---
 
 # 🏗 معماری پروژه
-
 
 ## Frontend Architecture
 
@@ -123,23 +115,12 @@ src
 │   └── layout
 │
 ├── pages
-│   ├── home
-│   ├── dashboard
-│   └── settings
 │
 ├── widgets
-│   ├── header
-│   └── sidebar
 │
 ├── features
-│   ├── auth-login
-│   ├── auth-register
-│   ├── change-password
-│   └── theme-toggle
 │
 ├── entities
-│   ├── user
-│   └── session
 │
 └── shared
     ├── ui
@@ -147,38 +128,35 @@ src
     └── lib
 ```
 
-
 مزایای این معماری:
 
 - جلوگیری از پیچیدگی پروژه
 - جداسازی مسئولیت‌ها
 - توسعه آسان قابلیت‌های جدید
-- مناسب برای پروژه‌های بزرگ
-
+- مناسب پروژه‌های بزرگ و تیمی
 
 ---
 
 # 🚀 اجرای پروژه
 
+## روش پیشنهادی: Docker
 
-## روش اول: Docker (پیشنهادی)
 
-
-### دریافت پروژه
+### Clone پروژه
 
 ```bash
 git clone https://github.com/MajiidJafarii/fullstack-lab.git
 ```
 
 
-ورود به پروژه:
+### ورود به پروژه
 
 ```bash
 cd fullstack-lab
 ```
 
 
-اجرای پروژه:
+### اجرای سرویس‌ها
 
 ```bash
 docker compose up --build
@@ -186,7 +164,6 @@ docker compose up --build
 
 
 بعد از اجرا:
-
 
 Frontend:
 
@@ -200,7 +177,6 @@ Backend:
 ```
 http://localhost:8000
 ```
-
 
 ---
 
@@ -221,7 +197,7 @@ npm install
 ```
 
 
-اجرای پروژه:
+اجرای Development:
 
 ```bash
 npm run dev
@@ -241,7 +217,6 @@ npm run build
 npm run fsd
 ```
 
-
 ---
 
 # اجرای Backend به صورت جداگانه
@@ -254,29 +229,6 @@ cd backend
 ```
 
 
-ساخت محیط مجازی:
-
-```bash
-python -m venv .venv
-```
-
-
-فعال‌سازی محیط مجازی:
-
-Linux / macOS:
-
-```bash
-source .venv/bin/activate
-```
-
-
-Windows:
-
-```bash
-.venv\Scripts\activate
-```
-
-
 نصب وابستگی‌ها:
 
 ```bash
@@ -284,7 +236,7 @@ pip install -r requirements.txt
 ```
 
 
-اجرای Migration:
+Migration:
 
 ```bash
 python manage.py migrate
@@ -297,11 +249,9 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-
 ---
 
-# ⚙️ متغیرهای محیطی
-
+# ⚙️ Environment Variables
 
 قبل از اجرا فایل:
 
@@ -318,55 +268,65 @@ python manage.py runserver
 DEBUG=True
 
 DATABASE_NAME=postgres
-
 DATABASE_USER=postgres
-
 DATABASE_PASSWORD=password
-
 DATABASE_HOST=db
-
 DATABASE_PORT=5432
 ```
-
 
 ---
 
 # 🔌 API
 
-
-پروژه دارای API مبتنی بر REST است.
+پروژه دارای REST API استاندارد است.
 
 
 نمونه Endpoint ها:
 
 
-## ورود
+## Authentication
 
 ```
 POST /api/auth/login/
 ```
 
-
-## ثبت‌نام
-
 ```
 POST /api/auth/register/
 ```
-
-
-## تایید ایمیل
 
 ```
 POST /api/auth/verify-email/
 ```
 
 
-## تغییر رمز
+## User
+
+```
+GET /api/me/
+```
 
 ```
 POST /api/me/change-password/
 ```
 
+
+## Blog
+
+```
+GET /api/blog/posts/
+```
+
+```
+POST /api/blog/posts/
+```
+
+```
+PATCH /api/blog/posts/{id}/
+```
+
+```
+DELETE /api/blog/posts/{id}/
+```
 
 ---
 
@@ -377,29 +337,34 @@ Frontend:
 
 ```bash
 npm run fsd
-
 npm run build
 ```
 
 
-این دستورات بررسی می‌کنند:
+بررسی موارد:
 
 - صحت TypeScript
-- ساخت Production
-- استاندارد بودن معماری FSD
-
+- Production Build
+- استاندارد معماری FSD
 
 ---
 
-# 🗺 مسیر توسعه آینده
+# 🗺 Roadmap آینده
 
 
-- [ ] سیستم نقش‌ها و سطح دسترسی کاربران
+- [ ] سیستم Role و Permission
 - [ ] پنل مدیریت کاربران
 - [ ] گزارش‌های پیشرفته
-- [ ] تست‌های کامل Backend
-- [ ] تست‌های کامل Frontend
+- [ ] تست کامل Backend
+- [ ] تست کامل Frontend
 - [ ] CI/CD با GitHub Actions
 - [ ] اعلان‌ها
-- [ ] استقرار روی سرور
+- [ ] Deployment روی سرور
 
+---
+
+# 👨‍💻 Author
+
+**Majid Jafari**
+
+Fullstack Developer
