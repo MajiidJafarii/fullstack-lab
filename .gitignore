@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+
+# Environment
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Django
+*.sqlite3
+staticfiles/
+media/
+
+# Node / React
+node_modules/
+dist/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
