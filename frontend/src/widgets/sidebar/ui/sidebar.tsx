@@ -18,6 +18,7 @@ import {
   LogOut,
   Menu,
   X,
+  FileText,
 } from "lucide-react"
 
 
@@ -42,17 +43,27 @@ const menuItems = [
     icon: Home,
   },
 
+
   {
     title: "داشبورد",
     path: "/dashboard",
     icon: LayoutDashboard,
   },
 
+
+  {
+    title: "بلاگ",
+    path: "/blog",
+    icon: FileText,
+  },
+
+
   {
     title: "پروفایل",
     path: "/profile",
     icon: User,
   },
+
 
   {
     title: "تنظیمات",
@@ -124,18 +135,12 @@ export function Sidebar() {
         right-5
         top-5
         z-50
-
         h-12
         w-12
-
         rounded-2xl
-
         bg-[#0f2747]
-
         text-white
-
         shadow-xl
-
         hover:bg-[#163b68]
         "
 
@@ -179,27 +184,18 @@ export function Sidebar() {
         fixed
         right-0
         top-0
-
         z-50
-
         flex
         h-screen
         w-80
         flex-col
-
         rounded-l-3xl
-
         border-l
         border-[#d4af37]/50
-
         bg-[#0f2747]
-
         p-6
-
         text-white
-
         shadow-2xl
-
         transition-transform
         duration-300
 
@@ -290,6 +286,7 @@ export function Sidebar() {
 
           {
             menuItems.map(
+
               (item) => {
 
 
@@ -316,17 +313,12 @@ export function Sidebar() {
                     flex
                     items-center
                     gap-4
-
                     rounded-2xl
-
                     px-4
                     py-3
-
                     text-sm
                     font-medium
-
                     transition-all
-
 
                     ${
                       isActive
@@ -356,7 +348,9 @@ export function Sidebar() {
                 )
 
               }
+
             )
+
           }
 
 
@@ -373,19 +367,12 @@ export function Sidebar() {
 
           className="
           mt-auto
-
           h-12
-
           rounded-2xl
-
           bg-[#b91c1c]
-
           text-white
-
           shadow-lg
-
           hover:bg-[#991b1b]
-
           "
 
         >
@@ -405,5 +392,4 @@ export function Sidebar() {
     </>
 
   )
-
 }

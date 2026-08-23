@@ -194,3 +194,136 @@ input::placeholder {
 
 }
 
+
+
+/* Galaxy Background */
+
+html.dark body {
+
+  background:
+
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(212,175,55,0.18),
+      transparent 30%
+    ),
+
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(59,130,246,0.22),
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at 50% 90%,
+      rgba(124,58,237,0.20),
+      transparent 35%
+    ),
+
+    #050816;
+
+
+  background-attachment: fixed;
+
+}
+
+
+
+
+html.dark body::before {
+
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  z-index: -1;
+
+
+  background-image:
+
+    radial-gradient(
+      white 1px,
+      transparent 1px
+    );
+
+
+  background-size:
+
+    70px 70px;
+
+
+  opacity: .15;
+
+}
+
+
+
+
+
+html.dark body {
+
+  background:
+
+    radial-gradient(
+      circle at 20% 10%,
+      rgba(212,175,55,0.18),
+      transparent 32%
+    ),
+
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(37,99,235,0.25),
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at 50% 90%,
+      rgba(126,34,206,0.22),
+      transparent 40%
+    ),
+
+    #050816;
+
+
+  background-attachment: fixed;
+
+}
+
+
+
+
+html.dark body::before {
+
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  z-index: -1;
+
+
+  background-image:
+
+    radial-gradient(
+      white 1px,
+      transparent 1px
+    );
+
+
+  background-size:
+
+    80px 80px;
+
+
+  opacity: .18;
+
+}
+
+

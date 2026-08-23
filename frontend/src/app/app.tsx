@@ -29,6 +29,12 @@ import {
 
 
 
+import {
+  BlogPage,
+} from "@/pages/blog"
+
+
+
 
 
 export function App() {
@@ -77,6 +83,22 @@ export function App() {
           element={
 
             <DashboardPage />
+
+          }
+
+        />
+
+
+
+
+
+        <Route
+
+          path="/blog"
+
+          element={
+
+            <BlogPage />
 
           }
 

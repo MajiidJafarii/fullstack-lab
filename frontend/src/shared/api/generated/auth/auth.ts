@@ -25,12 +25,15 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AuthLogoutCreate200,
+  AuthRefreshCreate200,
   Login,
   LoginRequest,
   Register,
   RegisterRequest,
   ResendVerification,
   ResendVerificationRequest,
+  User,
   VerifyEmail,
   VerifyEmailRequest
 } from '../../generated-types';
@@ -48,7 +51,7 @@ export const authCsrfRetrieve = (
 ) => {
       
       
-      return apiClient<void>(
+      return apiClient<User>(
       {url: `/api/auth/csrf/`, method: 'GET', signal
     },
       options);
@@ -191,7 +194,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 ) => {
       
       
-      return apiClient<void>(
+      return apiClient<AuthLogoutCreate200>(
       {url: `/api/auth/logout/`, method: 'POST', signal
     },
       options);
@@ -247,7 +250,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 ) => {
       
       
-      return apiClient<void>(
+      return apiClient<AuthRefreshCreate200>(
       {url: `/api/auth/refresh/`, method: 'POST', signal
     },
       options);

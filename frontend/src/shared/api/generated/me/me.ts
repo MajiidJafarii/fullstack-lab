@@ -25,7 +25,9 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  ChangePasswordRequest
+  ChangePasswordRequest,
+  PatchedUpdateProfileRequest,
+  User
 } from '../../generated-types';
 
 import { apiClient } from '../../http';
@@ -41,7 +43,7 @@ export const meRetrieve = (
 ) => {
       
       
-      return apiClient<void>(
+      return apiClient<User>(
       {url: `/api/me/`, method: 'GET', signal
     },
       options);
@@ -121,12 +123,14 @@ export function useMeRetrieve<TData = Awaited<ReturnType<typeof meRetrieve>>, TE
 
 
 export const mePartialUpdate = (
-    
+    patchedUpdateProfileRequest: PatchedUpdateProfileRequest,
  options?: SecondParameter<typeof apiClient>,) => {
       
       
-      return apiClient<void>(
-      {url: `/api/me/`, method: 'PATCH'
+      return apiClient<User>(
+      {url: `/api/me/`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: patchedUpdateProfileRequest
     },
       options);
     }
@@ -134,8 +138,8 @@ export const mePartialUpdate = (
 
 
 export const getMePartialUpdateMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof mePartialUpdate>>, TError,void, TContext>, request?: SecondParameter<typeof apiClient>}
-): UseMutationOptions<Awaited<ReturnType<typeof mePartialUpdate>>, TError,void, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof mePartialUpdate>>, TError,{data: PatchedUpdateProfileRequest}, TContext>, request?: SecondParameter<typeof apiClient>}
+): UseMutationOptions<Awaited<ReturnType<typeof mePartialUpdate>>, TError,{data: PatchedUpdateProfileRequest}, TContext> => {
 
 const mutationKey = ['mePartialUpdate'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -147,10 +151,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof mePartialUpdate>>, void> = () => {
-          
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof mePartialUpdate>>, {data: PatchedUpdateProfileRequest}> = (props) => {
+          const {data} = props ?? {};
 
-          return  mePartialUpdate(requestOptions)
+          return  mePartialUpdate(data,requestOptions)
         }
 
         
@@ -159,15 +163,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type MePartialUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof mePartialUpdate>>>
-    
+    export type MePartialUpdateMutationBody = PatchedUpdateProfileRequest
     export type MePartialUpdateMutationError = unknown
 
     export const useMePartialUpdate = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof mePartialUpdate>>, TError,void, TContext>, request?: SecondParameter<typeof apiClient>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof mePartialUpdate>>, TError,{data: PatchedUpdateProfileRequest}, TContext>, request?: SecondParameter<typeof apiClient>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof mePartialUpdate>>,
         TError,
-        void,
+        {data: PatchedUpdateProfileRequest},
         TContext
       > => {
 

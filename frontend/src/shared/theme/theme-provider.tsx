@@ -3,11 +3,13 @@ import {
 } from "next-themes"
 
 
+
 export function ThemeProvider({
   children,
 }: {
   children: React.ReactNode
 }) {
+
 
   return (
 
@@ -15,9 +17,9 @@ export function ThemeProvider({
 
       attribute="class"
 
-      defaultTheme="system"
+      defaultTheme="dark"
 
-      enableSystem
+      enableSystem={false}
 
     >
 

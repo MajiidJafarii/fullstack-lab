@@ -11,6 +11,13 @@ import {
 } from "@/shared/api"
 
 
+import type {
+  User,
+} from "@/entities/session"
+
+
+
+
 
 type AuthContextType = {
 
@@ -18,13 +25,17 @@ type AuthContextType = {
 
   loading: boolean
 
+  user: User | null
+
   refresh: () => Promise<void>
 
-  loginSuccess: () => void
+  loginSuccess: () => Promise<void>
 
   logout: () => Promise<void>
 
 }
+
+
 
 
 
@@ -33,11 +44,18 @@ const AuthContext =
 
 
 
+
+
 export function AuthProvider({
+
   children,
+
 }: {
+
   children: React.ReactNode
+
 }) {
+
 
 
   const [
@@ -48,26 +66,49 @@ export function AuthProvider({
 
 
   const [
+    user,
+    setUser,
+  ] = useState<User | null>(null)
+
+
+
+  const [
     loading,
     setLoading,
   ] = useState(true)
 
 
 
+
+
+
+
   async function refresh() {
+
 
     try {
 
 
-      await api.get(
-        "/api/me/"
+      const response =
+        await api.get<User>(
+          "/api/me/"
+        )
+
+
+
+      setUser(
+        response.data
       )
 
 
       setAuthenticated(true)
 
 
+
     } catch {
+
+
+      setUser(null)
 
 
       setAuthenticated(false)
@@ -75,7 +116,11 @@ export function AuthProvider({
 
     }
 
+
   }
+
+
+
 
 
 
@@ -84,6 +129,7 @@ export function AuthProvider({
 
 
     refresh()
+
       .finally(() => {
 
         setLoading(false)
@@ -96,13 +142,18 @@ export function AuthProvider({
 
 
 
-  function loginSuccess() {
 
 
-    setAuthenticated(true)
+
+  async function loginSuccess() {
+
+
+    await refresh()
 
 
   }
+
+
 
 
 
@@ -122,11 +173,10 @@ export function AuthProvider({
     } catch {
 
 
-      // حتی اگر API خطا داد
-      // سمت فرانت خروج انجام شود
-
-
     } finally {
+
+
+      setUser(null)
 
 
       setAuthenticated(false)
@@ -141,6 +191,8 @@ export function AuthProvider({
 
 
 
+
+
   return (
 
     <AuthContext.Provider
@@ -150,6 +202,8 @@ export function AuthProvider({
         authenticated,
 
         loading,
+
+        user,
 
         refresh,
 
@@ -168,6 +222,8 @@ export function AuthProvider({
   )
 
 }
+
+
 
 
 

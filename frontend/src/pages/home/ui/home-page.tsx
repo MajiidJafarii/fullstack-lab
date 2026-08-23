@@ -1,9 +1,17 @@
+import {
+  PostList,
+} from "@/features/blog-list"
+
+
+
+
+
 export function HomePage() {
 
 
   return (
 
-    <main
+    <div
 
       dir="rtl"
 
@@ -11,7 +19,7 @@ export function HomePage() {
 
       min-h-screen
 
-      px-5
+      px-6
 
       py-8
 
@@ -20,24 +28,11 @@ export function HomePage() {
     >
 
 
-
       <section
 
         className="
 
-        rounded-3xl
-
-        border
-
-        border-border
-
-        bg-card
-
-        p-8
-
-        shadow-sm
-
-        transition-colors
+        space-y-6
 
         "
 
@@ -51,188 +46,29 @@ export function HomePage() {
 
           text-3xl
 
-          font-bold
+          font-black
 
-          text-foreground
+          text-card-foreground
 
           "
 
         >
 
-          سامانه مدیریت سازمانی
+          آخرین مطالب
+
 
         </h1>
 
 
 
-        <p
 
-          className="
-
-          mt-4
-
-          leading-8
-
-          text-muted-foreground
-
-          "
-
-        >
-
-          خوش آمدید. از این بخش می‌توانید به امکانات سامانه دسترسی داشته باشید.
-
-        </p>
-
+        <PostList />
 
 
       </section>
 
 
-
-
-
-
-      <section
-
-        className="
-
-        mt-8
-
-        grid
-
-        gap-5
-
-        md:grid-cols-3
-
-        "
-
-      >
-
-
-
-        {
-          [
-
-            {
-              title:"کاربران",
-
-              text:"مدیریت اعضا و سطح دسترسی"
-
-            },
-
-
-            {
-              title:"گزارش‌ها",
-
-              text:"مشاهده گزارش‌های سیستم"
-
-            },
-
-
-            {
-              title:"تنظیمات",
-
-              text:"مدیریت تنظیمات حساب"
-
-            },
-
-
-          ].map((item)=>(
-
-
-
-            <div
-
-              key={item.title}
-
-              className="
-
-              rounded-2xl
-
-              border
-
-              border-border
-
-              bg-card
-
-              p-6
-
-
-              shadow-sm
-
-
-              transition-all
-
-
-              hover:-translate-y-1
-
-              hover:shadow-md
-
-
-              "
-
-            >
-
-
-
-              <h2
-
-                className="
-
-                text-xl
-
-                font-bold
-
-                text-foreground
-
-                "
-
-              >
-
-                {item.title}
-
-
-              </h2>
-
-
-
-
-              <p
-
-                className="
-
-                mt-3
-
-                text-sm
-
-                text-muted-foreground
-
-                "
-
-              >
-
-                {item.text}
-
-
-              </p>
-
-
-
-            </div>
-
-
-
-          ))
-
-        }
-
-
-
-      </section>
-
-
-
-    </main>
+    </div>
 
   )
 
