@@ -6,4 +6,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type PostRequestSlug = string | string;
+export interface CommentRequest {
+  post: number;
+  /** @minLength 1 */
+  content: string;
+}

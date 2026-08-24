@@ -24,8 +24,11 @@ export function useLoginAction() {
 
 
   async function login(
+
     email: string,
+
     password: string,
+
   ) {
 
 
@@ -33,19 +36,26 @@ export function useLoginAction() {
       await mutation.mutateAsync({
 
         data: {
+
           email,
+
           password,
+
         },
 
       })
 
 
-    loginSuccess()
+
+    await loginSuccess()
+
 
 
     return response
 
   }
+
+
 
 
 

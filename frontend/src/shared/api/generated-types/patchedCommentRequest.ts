@@ -6,4 +6,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type PatchedPostRequestSlug = string | string;
+export interface PatchedCommentRequest {
+  post?: number;
+  /** @minLength 1 */
+  content?: string;
+}

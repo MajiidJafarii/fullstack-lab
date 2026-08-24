@@ -3,8 +3,17 @@ import {
 } from "@/entities/blog"
 
 
-export function useBlogList() {
 
-  return useBlogPostsList()
+export function useBlogList(
+  page = 1,
+) {
+
+
+  return useBlogPostsList({
+
+    page,
+
+  })
+
 
 }

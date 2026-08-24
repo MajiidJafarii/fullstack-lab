@@ -1,6 +1,13 @@
 import {
+  useState,
+} from "react"
+
+
+
+import {
   PostCard,
 } from "@/entities/blog"
+
 
 
 import {
@@ -14,11 +21,18 @@ import {
 export function PostList() {
 
 
+  const [
+    page,
+    setPage,
+  ] = useState(1)
+
+
+
   const {
     data,
     isLoading,
     isError,
-  } = useBlogList()
+  } = useBlogList(page)
 
 
 
@@ -60,7 +74,14 @@ export function PostList() {
 
 
 
-  if (!data || data.length === 0) {
+  const posts =
+    data?.results ?? []
+
+
+
+
+
+  if (posts.length === 0) {
 
     return (
 
@@ -81,30 +102,136 @@ export function PostList() {
   return (
 
     <div
+
       className="
-      grid
-      gap-5
-      md:grid-cols-2
+      space-y-8
       "
+
     >
 
-      {
-        data.map(
 
-          (post) => (
+      <div
 
-            <PostCard
+        className="
+        grid
+        gap-5
+        sm:grid-cols-2
+        lg:grid-cols-3
+        xl:grid-cols-4
+        "
 
-              key={post.id}
+      >
 
-              post={post}
+        {
 
-            />
+          posts.map(
+
+            (post) => (
+
+              <PostCard
+
+                key={post.id}
+
+                post={post}
+
+              />
+
+            )
 
           )
 
-        )
-      }
+        }
+
+      </div>
+
+
+
+
+
+      <div
+
+        className="
+        flex
+        items-center
+        justify-center
+        gap-4
+        "
+
+      >
+
+
+        <button
+
+          disabled={!data?.previous}
+
+          onClick={() =>
+            setPage(
+              (prev) =>
+                Math.max(
+                  prev - 1,
+                  1
+                )
+            )
+          }
+
+          className="
+          rounded-lg
+          bg-slate-200
+          px-4
+          py-2
+          disabled:opacity-50
+          "
+
+        >
+
+          قبلی
+
+        </button>
+
+
+
+
+
+        <span>
+
+          صفحه {page}
+
+        </span>
+
+
+
+
+
+        <button
+
+          disabled={!data?.next}
+
+          onClick={() =>
+            setPage(
+              (prev) =>
+                prev + 1
+            )
+          }
+
+          className="
+          rounded-lg
+          bg-slate-900
+          px-4
+          py-2
+          text-white
+          disabled:opacity-50
+          "
+
+        >
+
+          بعدی
+
+        </button>
+
+
+
+      </div>
+
 
 
     </div>

@@ -5,7 +5,6 @@
  * Backend API for Fullstack Lab
  * OpenAPI spec version: 1.0.0
  */
-import type { PatchedPostRequestSlug } from './patchedPostRequestSlug';
 import type { StatusEnum } from './statusEnum';
 
 export interface PatchedPostRequest {
@@ -14,7 +13,6 @@ export interface PatchedPostRequest {
    * @maxLength 200
    */
   title?: string;
-  slug?: PatchedPostRequestSlug;
   /** @minLength 1 */
   content?: string;
   status?: StatusEnum;

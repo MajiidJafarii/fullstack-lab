@@ -4,6 +4,13 @@ import {
 } from "lucide-react"
 
 
+
+import {
+  useNavigate,
+} from "react-router"
+
+
+
 import type {
   Post,
 } from "@/entities/blog"
@@ -23,15 +30,23 @@ export function PostCard({
 }) {
 
 
+  const navigate = useNavigate()
+
+
+
   return (
 
     <article
+
+      onClick={() =>
+        navigate(`/blog/${post.id}`)
+      }
 
       className="
 
       group
 
-      relative
+      cursor-pointer
 
       overflow-hidden
 
@@ -43,13 +58,9 @@ export function PostCard({
 
       bg-card
 
-      text-card-foreground
-
-      shadow-md
-
       transition-all
 
-      duration-500
+      duration-300
 
       hover:-translate-y-2
 
@@ -60,34 +71,24 @@ export function PostCard({
     >
 
 
+
       <div
 
         className="
 
-        h-52
+        h-32
 
-        flex
+        bg-gradient-to-br
 
-        items-center
+        from-primary/20
 
-        justify-center
+        via-primary/10
 
-        bg-muted
-
-        transition-transform
-
-        duration-700
-
-        group-hover:scale-110
+        to-transparent
 
         "
 
-      >
-
-        بدون تصویر
-
-      </div>
-
+      />
 
 
 
@@ -104,13 +105,19 @@ export function PostCard({
 
       >
 
+
+
         <h2
 
           className="
 
-          text-xl
+          line-clamp-2
 
-          font-bold
+          text-lg
+
+          font-black
+
+          leading-8
 
           "
 
@@ -127,9 +134,11 @@ export function PostCard({
 
           className="
 
-          line-clamp-3
+          line-clamp-2
 
           text-sm
+
+          leading-7
 
           text-muted-foreground
 
@@ -144,6 +153,7 @@ export function PostCard({
 
 
 
+
         <div
 
           className="
@@ -152,7 +162,9 @@ export function PostCard({
 
           items-center
 
-          gap-2
+          justify-between
+
+          pt-2
 
           text-xs
 
@@ -162,153 +174,73 @@ export function PostCard({
 
         >
 
-          <CalendarDays size={15}/>
 
-          {post.created_at}
+
+          <span
+
+            className="
+
+            flex
+
+            items-center
+
+            gap-2
+
+            "
+
+          >
+
+            <CalendarDays size={14}/>
+
+            {post.created_at}
+
+          </span>
+
+
+
+
+
+          <span
+
+            className="
+
+            flex
+
+            items-center
+
+            gap-1
+
+            font-bold
+
+            text-primary
+
+            opacity-0
+
+            transition-all
+
+            duration-300
+
+            group-hover:opacity-100
+
+            "
+
+          >
+
+            مطالعه
+
+            <ArrowLeft size={15}/>
+
+
+          </span>
+
+
 
         </div>
 
 
+
       </div>
 
-
-
-
-
-      <div
-
-        className="
-
-        absolute
-
-        inset-0
-
-        flex
-
-        translate-y-full
-
-        flex-col
-
-        items-center
-
-        justify-center
-
-        gap-6
-
-        bg-gradient-to-br
-
-        from-[#0f2747]/95
-
-        via-[#163b68]/95
-
-        to-[#d4af37]/90
-
-        px-6
-
-        text-white
-
-        backdrop-blur-xl
-
-        transition-all
-
-        duration-500
-
-        group-hover:translate-y-0
-
-        "
-
-      >
-
-
-
-        <h3
-
-          className="
-
-          text-center
-
-          text-2xl
-
-          font-black
-
-          "
-
-        >
-
-          {post.title}
-
-        </h3>
-
-
-
-
-        <p
-
-          className="
-
-          text-sm
-
-          text-white/80
-
-          "
-
-        >
-
-          مشاهده جزئیات مطلب
-
-        </p>
-
-
-
-
-        <button
-
-          className="
-
-          flex
-
-          items-center
-
-          gap-3
-
-          rounded-2xl
-
-          border
-
-          border-[#d4af37]
-
-          bg-[#0f2747]/80
-
-          px-8
-
-          py-3
-
-          font-bold
-
-          text-[#d4af37]
-
-          ring-2
-
-          ring-[#d4af37]/40
-
-          shadow-xl
-
-          transition-all
-
-          hover:scale-110
-
-          "
-
-        >
-
-          مطالعه مطلب
-
-          <ArrowLeft size={20}/>
-
-        </button>
-
-
-      </div>
 
 
     </article>

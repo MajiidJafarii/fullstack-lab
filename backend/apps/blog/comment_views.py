@@ -15,32 +15,20 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-
-
-
 from apps.blog.models import Comment
 
 
-
-from apps.blog.serializers import (
-    CommentSerializer,
-)
-
+from apps.blog.serializers import CommentSerializer
 
 
 from apps.blog.comment_services import (
     create_comment,
     approve_comment,
+    hide_comment,
 )
 
 
-
-from apps.blog.permissions import (
-    IsSuperUser,
-)
-
-
-
+from apps.blog.permissions import IsSuperUser
 
 
 
@@ -54,22 +42,42 @@ class CommentViewSet(
     serializer_class = CommentSerializer
 
 
+    filterset_fields = [
 
-    permission_classes = [
-
-        IsAuthenticatedOrReadOnly,
+        "post",
 
     ]
 
 
 
+    def get_permissions(self):
+
+        if self.action in [
+
+            "approve",
+
+            "hide",
+
+        ]:
+
+            return [
+
+                IsSuperUser()
+
+            ]
+
+
+        return [
+
+            IsAuthenticatedOrReadOnly()
+
+        ]
 
 
 
 
 
     def get_queryset(self):
-
 
         queryset = (
 
@@ -86,9 +94,7 @@ class CommentViewSet(
         )
 
 
-
         user = self.request.user
-
 
 
         if (
@@ -103,17 +109,11 @@ class CommentViewSet(
 
 
 
-
-
         return queryset.filter(
 
             is_approved=True
 
         )
-
-
-
-
 
 
 
@@ -132,100 +132,19 @@ class CommentViewSet(
 
             post=
 
-                serializer.validated_data[
-
-                    "post"
-
-                ],
-
+            serializer.validated_data["post"],
 
 
             user=
 
-                self.request.user,
-
+            self.request.user,
 
 
             content=
 
-                serializer.validated_data[
-
-                    "content"
-
-                ],
+            serializer.validated_data["content"],
 
         )
-
-
-
-
-
-
-
-
-
-    def create(
-
-        self,
-
-        request,
-
-        *args,
-
-        **kwargs,
-
-    ):
-
-
-        serializer = CommentSerializer(
-
-            data=request.data
-
-        )
-
-
-
-        serializer.is_valid(
-
-            raise_exception=True
-
-        )
-
-
-
-        self.perform_create(
-
-            serializer
-
-        )
-
-
-
-        output = CommentSerializer(
-
-            self.comment,
-
-            context={
-
-                "request": request
-
-            }
-
-        )
-
-
-
-        return Response(
-
-            output.data,
-
-            status=status.HTTP_201_CREATED,
-
-        )
-
-
-
-
 
 
 
@@ -263,7 +182,6 @@ class CommentViewSet(
         comment = self.get_object()
 
 
-
         comment = approve_comment(
 
             comment
@@ -271,17 +189,57 @@ class CommentViewSet(
         )
 
 
+        return Response(
 
-        serializer = self.get_serializer(
+            self.get_serializer(comment).data
+
+        )
+
+
+
+
+
+    @action(
+
+        detail=True,
+
+        methods=[
+
+            "post"
+
+        ],
+
+        permission_classes=[
+
+            IsSuperUser
+
+        ],
+
+    )
+
+    def hide(
+
+        self,
+
+        request,
+
+        pk=None,
+
+    ):
+
+
+        comment = self.get_object()
+
+
+        comment = hide_comment(
 
             comment
 
         )
 
 
-
         return Response(
 
-            serializer.data
+            self.get_serializer(comment).data
 
         )

@@ -35,6 +35,12 @@ import {
 
 
 
+import {
+  PostDetailPage,
+} from "@/pages/post-detail"
+
+
+
 
 
 export function App() {
@@ -46,7 +52,6 @@ export function App() {
     <Routes>
 
 
-
       <Route
 
         element={
@@ -56,7 +61,6 @@ export function App() {
         }
 
       >
-
 
 
 
@@ -74,8 +78,6 @@ export function App() {
 
 
 
-
-
         <Route
 
           path="/dashboard"
@@ -87,8 +89,6 @@ export function App() {
           }
 
         />
-
-
 
 
 
@@ -106,6 +106,18 @@ export function App() {
 
 
 
+        <Route
+
+          path="/blog/:id"
+
+          element={
+
+            <PostDetailPage />
+
+          }
+
+        />
+
 
 
         <Route
@@ -119,54 +131,23 @@ export function App() {
 
               dir="rtl"
 
-              className="
-
-              min-h-screen
-
-              px-5
-
-              py-8
-
-              "
+              className="min-h-screen px-5 py-8"
 
             >
 
               <section
 
-                className="
-
-                rounded-3xl
-
-                border
-
-                border-border
-
-                bg-card
-
-                p-6
-
-                shadow-sm
-
-                "
+                className="rounded-3xl border border-border bg-card p-6 shadow-sm"
 
               >
 
                 <h1
 
-                  className="
-
-                  text-2xl
-
-                  font-bold
-
-                  text-foreground
-
-                  "
+                  className="text-2xl font-bold text-foreground"
 
                 >
 
                   پروفایل
-
 
                 </h1>
 
@@ -183,9 +164,6 @@ export function App() {
 
 
 
-
-
-
         <Route
 
           path="/settings"
@@ -199,12 +177,7 @@ export function App() {
         />
 
 
-
-
-
       </Route>
-
-
 
 
     </Routes>

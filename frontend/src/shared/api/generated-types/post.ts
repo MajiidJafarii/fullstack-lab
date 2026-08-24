@@ -5,7 +5,6 @@
  * Backend API for Fullstack Lab
  * OpenAPI spec version: 1.0.0
  */
-import type { PostSlug } from './postSlug';
 import type { StatusEnum } from './statusEnum';
 import type { Tag } from './tag';
 import type { PostImage } from './postImage';
@@ -14,7 +13,8 @@ export interface Post {
   readonly id: number;
   /** @maxLength 200 */
   title: string;
-  slug?: PostSlug;
+  /** @pattern ^[-a-zA-Z0-9_]+$ */
+  readonly slug: string;
   content: string;
   status?: StatusEnum;
   readonly author: string;

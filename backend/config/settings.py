@@ -268,6 +268,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 # Django REST Framework
 # =============================================================================
 
+
 REST_FRAMEWORK = {
     # -------------------------------------------------------------------------
     # Authentication
@@ -277,16 +278,18 @@ REST_FRAMEWORK = {
         "apps.accounts.authentication.CookieJWTAuthentication",
     ),
 
+
     # -------------------------------------------------------------------------
     # Permissions
     # -------------------------------------------------------------------------
     # Secure by default
     #
-    # یعنی تمام APIها به صورت پیش‌فرض Login می‌خواهند.
+    # تمام APIها به صورت پیش‌فرض Login می‌خواهند.
     # endpointهای عمومی بعداً صریحاً AllowAny خواهند داشت.
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
     ),
+
 
     # -------------------------------------------------------------------------
     # OpenAPI / Swagger
@@ -295,12 +298,24 @@ REST_FRAMEWORK = {
         "drf_spectacular.openapi.AutoSchema"
     ),
 
+
     # -------------------------------------------------------------------------
-    # Filtering
+    # Filtering / Search / Ordering / Pagination
     # -------------------------------------------------------------------------
     "DEFAULT_FILTER_BACKENDS": (
         "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
     ),
+
+
+    # Pagination عمومی پروژه
+    "DEFAULT_PAGINATION_CLASS": (
+        "apps.common.pagination.StandardPagination"
+    ),
+
+
+    "PAGE_SIZE": 12,
 }
 
 

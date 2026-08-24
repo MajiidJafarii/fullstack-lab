@@ -25,9 +25,15 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  BlogCommentsListParams,
+  BlogPostsListParams,
+  Comment,
+  CommentRequest,
+  PaginatedCommentList,
+  PaginatedPostList,
+  PatchedCommentRequest,
   PatchedPostRequest,
   Post,
-  PostCreate,
   PostCreateRequest,
   PostRequest
 } from '../../generated-types';
@@ -39,14 +45,15 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 
-export const blogPostsList = (
-    
+export const blogCommentsList = (
+    params?: BlogCommentsListParams,
  options?: SecondParameter<typeof apiClient>,signal?: AbortSignal
 ) => {
       
       
-      return apiClient<Post[]>(
-      {url: `/api/blog/posts/`, method: 'GET', signal
+      return apiClient<PaginatedCommentList>(
+      {url: `/api/blog/comments/`, method: 'GET',
+        params, signal
     },
       options);
     }
@@ -54,23 +61,541 @@ export const blogPostsList = (
 
 
 
-export const getBlogPostsListQueryKey = () => {
+export const getBlogCommentsListQueryKey = (params?: BlogCommentsListParams,) => {
     return [
-    `/api/blog/posts/`
+    `/api/blog/comments/`, ...(params ? [params]: [])
     ] as const;
     }
 
     
-export const getBlogPostsListQueryOptions = <TData = Awaited<ReturnType<typeof blogPostsList>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogPostsList>>, TError, TData>>, request?: SecondParameter<typeof apiClient>}
+export const getBlogCommentsListQueryOptions = <TData = Awaited<ReturnType<typeof blogCommentsList>>, TError = unknown>(params?: BlogCommentsListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogCommentsList>>, TError, TData>>, request?: SecondParameter<typeof apiClient>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getBlogPostsListQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getBlogCommentsListQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof blogPostsList>>> = ({ signal }) => blogPostsList(requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof blogCommentsList>>> = ({ signal }) => blogCommentsList(params, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof blogCommentsList>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type BlogCommentsListQueryResult = NonNullable<Awaited<ReturnType<typeof blogCommentsList>>>
+export type BlogCommentsListQueryError = unknown
+
+
+export function useBlogCommentsList<TData = Awaited<ReturnType<typeof blogCommentsList>>, TError = unknown>(
+ params: undefined |  BlogCommentsListParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogCommentsList>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof blogCommentsList>>,
+          TError,
+          Awaited<ReturnType<typeof blogCommentsList>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useBlogCommentsList<TData = Awaited<ReturnType<typeof blogCommentsList>>, TError = unknown>(
+ params?: BlogCommentsListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogCommentsList>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof blogCommentsList>>,
+          TError,
+          Awaited<ReturnType<typeof blogCommentsList>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useBlogCommentsList<TData = Awaited<ReturnType<typeof blogCommentsList>>, TError = unknown>(
+ params?: BlogCommentsListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogCommentsList>>, TError, TData>>, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useBlogCommentsList<TData = Awaited<ReturnType<typeof blogCommentsList>>, TError = unknown>(
+ params?: BlogCommentsListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogCommentsList>>, TError, TData>>, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getBlogCommentsListQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const blogCommentsCreate = (
+    commentRequest: CommentRequest,
+ options?: SecondParameter<typeof apiClient>,signal?: AbortSignal
+) => {
+      
+      
+      return apiClient<Comment>(
+      {url: `/api/blog/comments/`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: commentRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getBlogCommentsCreateMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof blogCommentsCreate>>, TError,{data: CommentRequest}, TContext>, request?: SecondParameter<typeof apiClient>}
+): UseMutationOptions<Awaited<ReturnType<typeof blogCommentsCreate>>, TError,{data: CommentRequest}, TContext> => {
+
+const mutationKey = ['blogCommentsCreate'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof blogCommentsCreate>>, {data: CommentRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  blogCommentsCreate(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type BlogCommentsCreateMutationResult = NonNullable<Awaited<ReturnType<typeof blogCommentsCreate>>>
+    export type BlogCommentsCreateMutationBody = CommentRequest
+    export type BlogCommentsCreateMutationError = unknown
+
+    export const useBlogCommentsCreate = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof blogCommentsCreate>>, TError,{data: CommentRequest}, TContext>, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof blogCommentsCreate>>,
+        TError,
+        {data: CommentRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getBlogCommentsCreateMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    export const blogCommentsRetrieve = (
+    id: number,
+ options?: SecondParameter<typeof apiClient>,signal?: AbortSignal
+) => {
+      
+      
+      return apiClient<Comment>(
+      {url: `/api/blog/comments/${id}/`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getBlogCommentsRetrieveQueryKey = (id?: number,) => {
+    return [
+    `/api/blog/comments/${id}/`
+    ] as const;
+    }
+
+    
+export const getBlogCommentsRetrieveQueryOptions = <TData = Awaited<ReturnType<typeof blogCommentsRetrieve>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogCommentsRetrieve>>, TError, TData>>, request?: SecondParameter<typeof apiClient>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getBlogCommentsRetrieveQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof blogCommentsRetrieve>>> = ({ signal }) => blogCommentsRetrieve(id, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof blogCommentsRetrieve>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type BlogCommentsRetrieveQueryResult = NonNullable<Awaited<ReturnType<typeof blogCommentsRetrieve>>>
+export type BlogCommentsRetrieveQueryError = unknown
+
+
+export function useBlogCommentsRetrieve<TData = Awaited<ReturnType<typeof blogCommentsRetrieve>>, TError = unknown>(
+ id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogCommentsRetrieve>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof blogCommentsRetrieve>>,
+          TError,
+          Awaited<ReturnType<typeof blogCommentsRetrieve>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useBlogCommentsRetrieve<TData = Awaited<ReturnType<typeof blogCommentsRetrieve>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogCommentsRetrieve>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof blogCommentsRetrieve>>,
+          TError,
+          Awaited<ReturnType<typeof blogCommentsRetrieve>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useBlogCommentsRetrieve<TData = Awaited<ReturnType<typeof blogCommentsRetrieve>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogCommentsRetrieve>>, TError, TData>>, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useBlogCommentsRetrieve<TData = Awaited<ReturnType<typeof blogCommentsRetrieve>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogCommentsRetrieve>>, TError, TData>>, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getBlogCommentsRetrieveQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const blogCommentsUpdate = (
+    id: number,
+    commentRequest: CommentRequest,
+ options?: SecondParameter<typeof apiClient>,) => {
+      
+      
+      return apiClient<Comment>(
+      {url: `/api/blog/comments/${id}/`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: commentRequest
+    },
+      options);
+    }
+  
+
+
+export const getBlogCommentsUpdateMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof blogCommentsUpdate>>, TError,{id: number;data: CommentRequest}, TContext>, request?: SecondParameter<typeof apiClient>}
+): UseMutationOptions<Awaited<ReturnType<typeof blogCommentsUpdate>>, TError,{id: number;data: CommentRequest}, TContext> => {
+
+const mutationKey = ['blogCommentsUpdate'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof blogCommentsUpdate>>, {id: number;data: CommentRequest}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  blogCommentsUpdate(id,data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type BlogCommentsUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof blogCommentsUpdate>>>
+    export type BlogCommentsUpdateMutationBody = CommentRequest
+    export type BlogCommentsUpdateMutationError = unknown
+
+    export const useBlogCommentsUpdate = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof blogCommentsUpdate>>, TError,{id: number;data: CommentRequest}, TContext>, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof blogCommentsUpdate>>,
+        TError,
+        {id: number;data: CommentRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getBlogCommentsUpdateMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    export const blogCommentsPartialUpdate = (
+    id: number,
+    patchedCommentRequest: PatchedCommentRequest,
+ options?: SecondParameter<typeof apiClient>,) => {
+      
+      
+      return apiClient<Comment>(
+      {url: `/api/blog/comments/${id}/`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: patchedCommentRequest
+    },
+      options);
+    }
+  
+
+
+export const getBlogCommentsPartialUpdateMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof blogCommentsPartialUpdate>>, TError,{id: number;data: PatchedCommentRequest}, TContext>, request?: SecondParameter<typeof apiClient>}
+): UseMutationOptions<Awaited<ReturnType<typeof blogCommentsPartialUpdate>>, TError,{id: number;data: PatchedCommentRequest}, TContext> => {
+
+const mutationKey = ['blogCommentsPartialUpdate'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof blogCommentsPartialUpdate>>, {id: number;data: PatchedCommentRequest}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  blogCommentsPartialUpdate(id,data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type BlogCommentsPartialUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof blogCommentsPartialUpdate>>>
+    export type BlogCommentsPartialUpdateMutationBody = PatchedCommentRequest
+    export type BlogCommentsPartialUpdateMutationError = unknown
+
+    export const useBlogCommentsPartialUpdate = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof blogCommentsPartialUpdate>>, TError,{id: number;data: PatchedCommentRequest}, TContext>, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof blogCommentsPartialUpdate>>,
+        TError,
+        {id: number;data: PatchedCommentRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getBlogCommentsPartialUpdateMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    export const blogCommentsDestroy = (
+    id: number,
+ options?: SecondParameter<typeof apiClient>,) => {
+      
+      
+      return apiClient<void>(
+      {url: `/api/blog/comments/${id}/`, method: 'DELETE'
+    },
+      options);
+    }
+  
+
+
+export const getBlogCommentsDestroyMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof blogCommentsDestroy>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof apiClient>}
+): UseMutationOptions<Awaited<ReturnType<typeof blogCommentsDestroy>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['blogCommentsDestroy'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof blogCommentsDestroy>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  blogCommentsDestroy(id,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type BlogCommentsDestroyMutationResult = NonNullable<Awaited<ReturnType<typeof blogCommentsDestroy>>>
+    
+    export type BlogCommentsDestroyMutationError = unknown
+
+    export const useBlogCommentsDestroy = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof blogCommentsDestroy>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof blogCommentsDestroy>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+
+      const mutationOptions = getBlogCommentsDestroyMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    export const blogCommentsApproveCreate = (
+    id: number,
+    commentRequest: CommentRequest,
+ options?: SecondParameter<typeof apiClient>,signal?: AbortSignal
+) => {
+      
+      
+      return apiClient<Comment>(
+      {url: `/api/blog/comments/${id}/approve/`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: commentRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getBlogCommentsApproveCreateMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof blogCommentsApproveCreate>>, TError,{id: number;data: CommentRequest}, TContext>, request?: SecondParameter<typeof apiClient>}
+): UseMutationOptions<Awaited<ReturnType<typeof blogCommentsApproveCreate>>, TError,{id: number;data: CommentRequest}, TContext> => {
+
+const mutationKey = ['blogCommentsApproveCreate'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof blogCommentsApproveCreate>>, {id: number;data: CommentRequest}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  blogCommentsApproveCreate(id,data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type BlogCommentsApproveCreateMutationResult = NonNullable<Awaited<ReturnType<typeof blogCommentsApproveCreate>>>
+    export type BlogCommentsApproveCreateMutationBody = CommentRequest
+    export type BlogCommentsApproveCreateMutationError = unknown
+
+    export const useBlogCommentsApproveCreate = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof blogCommentsApproveCreate>>, TError,{id: number;data: CommentRequest}, TContext>, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof blogCommentsApproveCreate>>,
+        TError,
+        {id: number;data: CommentRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getBlogCommentsApproveCreateMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    export const blogCommentsHideCreate = (
+    id: number,
+    commentRequest: CommentRequest,
+ options?: SecondParameter<typeof apiClient>,signal?: AbortSignal
+) => {
+      
+      
+      return apiClient<Comment>(
+      {url: `/api/blog/comments/${id}/hide/`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: commentRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getBlogCommentsHideCreateMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof blogCommentsHideCreate>>, TError,{id: number;data: CommentRequest}, TContext>, request?: SecondParameter<typeof apiClient>}
+): UseMutationOptions<Awaited<ReturnType<typeof blogCommentsHideCreate>>, TError,{id: number;data: CommentRequest}, TContext> => {
+
+const mutationKey = ['blogCommentsHideCreate'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof blogCommentsHideCreate>>, {id: number;data: CommentRequest}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  blogCommentsHideCreate(id,data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type BlogCommentsHideCreateMutationResult = NonNullable<Awaited<ReturnType<typeof blogCommentsHideCreate>>>
+    export type BlogCommentsHideCreateMutationBody = CommentRequest
+    export type BlogCommentsHideCreateMutationError = unknown
+
+    export const useBlogCommentsHideCreate = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof blogCommentsHideCreate>>, TError,{id: number;data: CommentRequest}, TContext>, request?: SecondParameter<typeof apiClient>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof blogCommentsHideCreate>>,
+        TError,
+        {id: number;data: CommentRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getBlogCommentsHideCreateMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    export const blogPostsList = (
+    params?: BlogPostsListParams,
+ options?: SecondParameter<typeof apiClient>,signal?: AbortSignal
+) => {
+      
+      
+      return apiClient<PaginatedPostList>(
+      {url: `/api/blog/posts/`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+  
+
+
+
+export const getBlogPostsListQueryKey = (params?: BlogPostsListParams,) => {
+    return [
+    `/api/blog/posts/`, ...(params ? [params]: [])
+    ] as const;
+    }
+
+    
+export const getBlogPostsListQueryOptions = <TData = Awaited<ReturnType<typeof blogPostsList>>, TError = unknown>(params?: BlogPostsListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogPostsList>>, TError, TData>>, request?: SecondParameter<typeof apiClient>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getBlogPostsListQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof blogPostsList>>> = ({ signal }) => blogPostsList(params, requestOptions, signal);
 
       
 
@@ -84,7 +609,7 @@ export type BlogPostsListQueryError = unknown
 
 
 export function useBlogPostsList<TData = Awaited<ReturnType<typeof blogPostsList>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogPostsList>>, TError, TData>> & Pick<
+ params: undefined |  BlogPostsListParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogPostsList>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof blogPostsList>>,
           TError,
@@ -94,7 +619,7 @@ export function useBlogPostsList<TData = Awaited<ReturnType<typeof blogPostsList
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useBlogPostsList<TData = Awaited<ReturnType<typeof blogPostsList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogPostsList>>, TError, TData>> & Pick<
+ params?: BlogPostsListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogPostsList>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof blogPostsList>>,
           TError,
@@ -104,16 +629,16 @@ export function useBlogPostsList<TData = Awaited<ReturnType<typeof blogPostsList
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useBlogPostsList<TData = Awaited<ReturnType<typeof blogPostsList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogPostsList>>, TError, TData>>, request?: SecondParameter<typeof apiClient>}
+ params?: BlogPostsListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogPostsList>>, TError, TData>>, request?: SecondParameter<typeof apiClient>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useBlogPostsList<TData = Awaited<ReturnType<typeof blogPostsList>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogPostsList>>, TError, TData>>, request?: SecondParameter<typeof apiClient>}
+ params?: BlogPostsListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof blogPostsList>>, TError, TData>>, request?: SecondParameter<typeof apiClient>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getBlogPostsListQueryOptions(options)
+  const queryOptions = getBlogPostsListQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -142,7 +667,7 @@ if(postCreateRequest.published_at !== undefined && postCreateRequest.published_a
  formData.append(`published_at`, postCreateRequest.published_at)
  }
 
-      return apiClient<PostCreate>(
+      return apiClient<Post>(
       {url: `/api/blog/posts/`, method: 'POST',
       headers: {'Content-Type': 'multipart/form-data', },
        data: formData, signal
@@ -286,9 +811,6 @@ export const blogPostsUpdate = (
       
       const formData = new FormData();
 formData.append(`title`, postRequest.title)
-if(postRequest.slug !== undefined) {
- formData.append(`slug`, postRequest.slug)
- }
 formData.append(`content`, postRequest.content)
 if(postRequest.status !== undefined) {
  formData.append(`status`, postRequest.status)
@@ -357,9 +879,6 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       const formData = new FormData();
 if(patchedPostRequest.title !== undefined) {
  formData.append(`title`, patchedPostRequest.title)
- }
-if(patchedPostRequest.slug !== undefined) {
- formData.append(`slug`, patchedPostRequest.slug)
  }
 if(patchedPostRequest.content !== undefined) {
  formData.append(`content`, patchedPostRequest.content)
