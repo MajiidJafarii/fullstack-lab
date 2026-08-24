@@ -152,3 +152,119 @@ class PostCreateSerializer(
 
 
         return value
+
+
+from apps.blog.models import Comment
+
+
+
+
+
+class CommentSerializer(
+    serializers.ModelSerializer
+):
+
+
+    user = serializers.EmailField(
+
+        source="user.email",
+
+        read_only=True,
+
+    )
+
+
+
+    class Meta:
+
+        model = Comment
+
+
+        fields = [
+
+            "id",
+
+            "post",
+
+            "user",
+
+            "content",
+
+            "is_approved",
+
+            "created_at",
+
+            "updated_at",
+
+        ]
+
+
+        read_only_fields = [
+
+            "id",
+
+            "user",
+
+            "is_approved",
+
+            "created_at",
+
+            "updated_at",
+
+        ]
+
+
+class CommentSerializer(
+    serializers.ModelSerializer
+):
+
+
+    user = serializers.EmailField(
+
+        source="user.email",
+
+        read_only=True,
+
+    )
+
+
+
+    class Meta:
+
+        model = Comment
+
+
+        fields = [
+
+            "id",
+
+            "post",
+
+            "user",
+
+            "content",
+
+            "is_approved",
+
+            "created_at",
+
+            "updated_at",
+
+        ]
+
+
+
+        read_only_fields = [
+
+            "id",
+
+            "user",
+
+            "is_approved",
+
+            "created_at",
+
+            "updated_at",
+
+        ]
+
