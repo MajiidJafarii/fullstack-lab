@@ -11,7 +11,7 @@ import {
 
 import {
   useBlogPostsRetrieve,
-} from "@/shared/api/generated/blog/blog"
+} from "@/entities/blog"
 
 
 import {
@@ -21,12 +21,12 @@ import {
 
 import {
   CommentForm,
-} from "@/features/create-comment/ui/comment-form"
+} from "@/features/create-comment"
 
 
 import {
-  CommentList,
-} from "@/entities/blog"
+  CommentSection,
+} from "@/widgets/comment-section"
 
 
 
@@ -275,11 +275,13 @@ export function PostDetailPage() {
 
       >
 
-        <CommentList
+
+        <CommentSection
 
           postId={post.id}
 
         />
+
 
 
         {

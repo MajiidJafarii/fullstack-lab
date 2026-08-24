@@ -6,7 +6,7 @@ import {
 import {
   useBlogCommentsHideCreate,
   getBlogCommentsListQueryKey,
-} from "@/shared/api/generated/blog/blog"
+} from "@/entities/blog"
 
 
 
@@ -38,7 +38,13 @@ export function useHideComment() {
 
       id,
 
-      data: {},
+      data: {
+
+        post: id,
+
+        content: "",
+
+      },
 
     })
 
@@ -47,7 +53,6 @@ export function useHideComment() {
     await queryClient.invalidateQueries({
 
       queryKey:
-
         getBlogCommentsListQueryKey(),
 
     })

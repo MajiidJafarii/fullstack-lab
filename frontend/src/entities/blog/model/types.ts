@@ -4,4 +4,4 @@ import type {
 
 
 export type Post =
-  BlogPostsListQueryResult[number]
+  BlogPostsListQueryResult["results"][number]

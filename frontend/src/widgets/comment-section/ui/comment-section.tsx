@@ -6,7 +6,7 @@ import {
 
 import {
   useBlogCommentsList,
-} from "@/shared/api/generated/blog/blog"
+} from "@/entities/blog"
 
 
 import {
@@ -16,18 +16,18 @@ import {
 
 import {
   useApproveComment,
-} from "@/features/approve-comment/model/use-approve-comment"
+} from "@/features/approve-comment"
 
 
 import {
   useHideComment,
-} from "@/features/hide-comment/model/use-hide-comment"
+} from "@/features/hide-comment"
 
 
 
 
 
-export function CommentList({
+export function CommentSection({
 
   postId,
 
@@ -158,7 +158,6 @@ export function CommentList({
       className="space-y-5"
 
     >
-
 
 
       <h2
@@ -321,9 +320,7 @@ export function CommentList({
                   <button
 
                     onClick={() =>
-
                       approve(comment.id)
-
                     }
 
 
@@ -345,8 +342,6 @@ export function CommentList({
                     font-bold
 
                     text-white
-
-                    transition
 
                     hover:bg-green-700
 
@@ -398,9 +393,7 @@ export function CommentList({
                   <button
 
                     onClick={() =>
-
                       hide(comment.id)
-
                     }
 
 
@@ -424,8 +417,6 @@ export function CommentList({
                     font-bold
 
                     text-white
-
-                    transition
 
                     hover:bg-red-700
 
@@ -455,8 +446,6 @@ export function CommentList({
                 )
 
               }
-
-
 
 
 
@@ -513,7 +502,6 @@ export function CommentList({
         )
 
       }
-
 
 
     </section>

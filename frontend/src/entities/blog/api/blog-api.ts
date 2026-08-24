@@ -1,14 +1,17 @@
 export {
   useBlogPostsList,
   useBlogPostsRetrieve,
+
   useBlogPostsCreate,
   useBlogPostsUpdate,
   useBlogPostsPartialUpdate,
   useBlogPostsDestroy,
-} from "@/shared/api/generated/blog/blog"
 
+  useBlogCommentsList,
+  useBlogCommentsCreate,
+  useBlogCommentsApproveCreate,
+  useBlogCommentsHideCreate,
 
+  getBlogCommentsListQueryKey,
 
-export type {
-  BlogPostsListQueryResult,
 } from "@/shared/api/generated/blog/blog"

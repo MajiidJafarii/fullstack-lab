@@ -3,18 +3,15 @@ import {
 } from "react-hook-form"
 
 
-
 import {
   zodResolver,
 } from "@hookform/resolvers/zod"
-
 
 
 import {
   commentSchema,
   type CommentFormValues,
 } from "../model/schema"
-
 
 
 import {
@@ -56,7 +53,9 @@ export function CommentForm({
     resolver:
 
       zodResolver(
+
         commentSchema
+
       ),
 
   })
@@ -65,49 +64,40 @@ export function CommentForm({
 
 
 
-  const mutation =
-    useCreateComment()
+  const {
+
+    create,
+
+    isPending,
+
+  } = useCreateComment()
 
 
 
 
 
-  function submit(
+  async function submit(
 
     values: CommentFormValues
 
   ) {
 
 
-    mutation.mutate(
+    await create({
 
-      {
+      post:
 
-        data: {
+        postId,
 
-          post:
+      content:
 
-            postId,
+        values.content,
 
-          content:
+    })
 
-            values.content,
 
-        },
 
-      },
-
-      {
-
-        onSuccess() {
-
-          reset()
-
-        },
-
-      }
-
-    )
+    reset()
 
 
   }
@@ -170,7 +160,9 @@ export function CommentForm({
       <textarea
 
         {...register(
+
           "content"
+
         )}
 
         rows={5}
@@ -204,16 +196,29 @@ export function CommentForm({
 
 
 
+
       {
 
         errors.content &&
 
         (
 
-          <p className="text-sm text-red-500">
+          <p
+
+            className="
+
+            text-sm
+
+            text-red-500
+
+            "
+
+          >
 
             {
+
               errors.content.message
+
             }
 
           </p>
@@ -225,9 +230,10 @@ export function CommentForm({
 
 
 
+
       <button
 
-        disabled={mutation.isPending}
+        disabled={isPending}
 
         className="
 
@@ -251,7 +257,7 @@ export function CommentForm({
 
         {
 
-          mutation.isPending
+          isPending
 
           ?
 
