@@ -1,27 +1,30 @@
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
+from drf_spectacular.utils import extend_schema
+
+
 from rest_framework import status
-
-
 from rest_framework.parsers import (
-    MultiPartParser,
     FormParser,
+    MultiPartParser,
 )
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 
-from apps.blog.models import (
-    Post,
-    PostImage,
-)
+from apps.blog.models import Post
 
 
 from apps.blog.serializers import (
-    PostSerializer,
     PostCreateSerializer,
+    PostSerializer,
 )
 
 
-from apps.blog.permissions import (
+from apps.blog.services import (
+    create_post,
+)
+
+
+from apps.common.permissions import (
     IsSuperUserOrReadOnly,
 )
 
@@ -31,51 +34,46 @@ from apps.blog.permissions import (
 
 class PostViewSet(ModelViewSet):
 
-
     permission_classes = [
-
         IsSuperUserOrReadOnly,
-
     ]
-
 
 
     parser_classes = [
-
         MultiPartParser,
-
         FormParser,
-
     ]
-
-
 
 
 
     def get_queryset(self):
 
+        queryset = (
+            Post.objects
+            .select_related(
+                "author"
+            )
+            .prefetch_related(
+                "tags",
+                "images",
+            )
+        )
+
+
         user = self.request.user
 
 
         if (
-
             user.is_authenticated
-
             and user.is_superuser
-
         ):
 
-            return Post.objects.all()
+            return queryset
 
 
-
-        return Post.objects.filter(
-
+        return queryset.filter(
             status=Post.Status.PUBLISHED
-
         )
-
-
 
 
 
@@ -90,85 +88,57 @@ class PostViewSet(ModelViewSet):
 
 
 
+    @extend_schema(
+        request=PostCreateSerializer,
+        responses={
+            201: PostSerializer,
+        },
+    )
+    def create(
+        self,
+        request,
+        *args,
+        **kwargs,
+    ):
 
-
-    def perform_create(self, serializer):
-
-
-        self.created_post = serializer.save(
-
-            author=self.request.user
-
-        )
-
-
-
-        images = self.request.FILES.getlist(
-
-            "images"
-
-        )
-
-
-        for index, image in enumerate(images):
-
-
-            PostImage.objects.create(
-
-                post=self.created_post,
-
-                image=image,
-
-                order=index,
-
+        serializer = (
+            PostCreateSerializer(
+                data=request.data
             )
-
-
-
-
-
-    def create(self, request, *args, **kwargs):
-
-
-        serializer = self.get_serializer(
-
-            data=request.data
-
         )
 
 
         serializer.is_valid(
-
             raise_exception=True
-
         )
 
 
-        self.perform_create(
-
-            serializer
-
+        post = create_post(
+            author=request.user,
+            validated_data=(
+                serializer.validated_data
+            ),
+            images=(
+                request.FILES.getlist(
+                    "images"
+                )
+            ),
         )
 
 
-
-        output_serializer = PostSerializer(
-
-            self.created_post,
-
-            context={
-
-                "request": request
-
-            }
-
+        output_serializer = (
+            PostSerializer(
+                post,
+                context={
+                    "request": request,
+                },
+            )
         )
 
 
         return Response(
-
             output_serializer.data,
-
-            status=status.HTTP_201_CREATED
-
+            status=(
+                status.HTTP_201_CREATED
+            ),
         )

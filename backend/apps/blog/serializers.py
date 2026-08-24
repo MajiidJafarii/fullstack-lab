@@ -2,17 +2,18 @@ from rest_framework import serializers
 
 
 from apps.blog.models import (
-    Tag,
     Post,
     PostImage,
+    Tag,
 )
 
 
 
 
 
-class TagSerializer(serializers.ModelSerializer):
-
+class TagSerializer(
+    serializers.ModelSerializer
+):
 
     class Meta:
 
@@ -28,10 +29,9 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 
-
-
-class PostImageSerializer(serializers.ModelSerializer):
-
+class PostImageSerializer(
+    serializers.ModelSerializer
+):
 
     class Meta:
 
@@ -48,35 +48,25 @@ class PostImageSerializer(serializers.ModelSerializer):
 
 
 
-
-
-class PostSerializer(serializers.ModelSerializer):
-
+class PostSerializer(
+    serializers.ModelSerializer
+):
 
     author = serializers.EmailField(
-
         source="author.email",
-
         read_only=True,
-
     )
 
 
     tags = TagSerializer(
-
         many=True,
-
         read_only=True,
-
     )
 
 
     images = PostImageSerializer(
-
         many=True,
-
         read_only=True,
-
     )
 
 
@@ -100,100 +90,65 @@ class PostSerializer(serializers.ModelSerializer):
         ]
 
 
-
-
-
-
-
-
-
-class PostCreateSerializer(serializers.ModelSerializer):
-
-
-    id = serializers.IntegerField(
-
-        read_only=True,
-
-    )
-
-
-    tags = serializers.ListField(
-
-        child=serializers.CharField(
-
-            max_length=100
-
-        ),
-
-        required=False,
-
-    )
-
-
-
-    class Meta:
-
-        model = Post
-
-
-        fields = [
+        read_only_fields = [
             "id",
-            "title",
-            "content",
-            "status",
-            "tags",
-            "published_at",
+            "slug",
+            "author",
+            "created_at",
+            "updated_at",
         ]
 
 
 
 
 
-    def create(self, validated_data):
+class PostCreateSerializer(
+    serializers.Serializer
+):
+
+    title = serializers.CharField(
+        max_length=200,
+    )
 
 
-        tags_data = validated_data.pop(
-
-            "tags",
-
-            []
-
-        )
+    content = serializers.CharField()
 
 
-
-        post = Post.objects.create(
-
-            **validated_data
-
-        )
+    status = serializers.ChoiceField(
+        choices=Post.Status.choices,
+        default=Post.Status.DRAFT,
+    )
 
 
+    tags = serializers.ListField(
+        child=serializers.CharField(
+            max_length=100,
+        ),
+        required=False,
+        default=list,
+    )
 
-        for tag_name in tags_data:
+
+    published_at = serializers.DateTimeField(
+        required=False,
+        allow_null=True,
+    )
 
 
-            tag, _ = Tag.objects.get_or_create(
 
-                name=tag_name,
+    def validate_title(
+        self,
+        value,
+    ):
 
-                defaults={
+        value = value.strip()
 
-                    "slug": tag_name.lower().replace(
 
-                        " ",
+        if not value:
 
-                        "-"
-
-                    )
-
-                }
-
+            raise serializers.ValidationError(
+                "Title cannot be empty."
             )
 
 
-            post.tags.add(tag)
-
-
-
-        return post
+        return value

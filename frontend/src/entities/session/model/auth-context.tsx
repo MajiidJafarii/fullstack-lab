@@ -46,6 +46,8 @@ const AuthContext =
 
 
 
+
+
 export function AuthProvider({
 
   children,
@@ -83,6 +85,39 @@ export function AuthProvider({
 
 
 
+  async function initCSRF() {
+
+
+    try {
+
+
+      await api.get(
+
+        "/api/auth/csrf/"
+
+      )
+
+
+    } catch {
+
+
+      console.error(
+        "Failed to initialize CSRF"
+      )
+
+
+    }
+
+
+  }
+
+
+
+
+
+
+
+
   async function refresh() {
 
 
@@ -91,14 +126,19 @@ export function AuthProvider({
 
       const response =
         await api.get<User>(
+
           "/api/me/"
+
         )
 
 
 
       setUser(
+
         response.data
+
       )
+
 
 
       setAuthenticated(true)
@@ -125,19 +165,32 @@ export function AuthProvider({
 
 
 
+
   useEffect(() => {
 
 
-    refresh()
+    async function initializeAuth() {
 
-      .finally(() => {
 
-        setLoading(false)
+      await initCSRF()
 
-      })
+
+      await refresh()
+
+
+      setLoading(false)
+
+
+    }
+
+
+
+    initializeAuth()
+
 
 
   }, [])
+
 
 
 
@@ -159,6 +212,7 @@ export function AuthProvider({
 
 
 
+
   async function logout() {
 
 
@@ -166,7 +220,9 @@ export function AuthProvider({
 
 
       await api.post(
+
         "/api/auth/logout/"
+
       )
 
 
@@ -186,6 +242,7 @@ export function AuthProvider({
 
 
   }
+
 
 
 
@@ -229,6 +286,7 @@ export function AuthProvider({
 
 
 
+
 export function useAuth() {
 
 
@@ -241,7 +299,9 @@ export function useAuth() {
 
 
     throw new Error(
+
       "useAuth must be used inside AuthProvider"
+
     )
 
 
